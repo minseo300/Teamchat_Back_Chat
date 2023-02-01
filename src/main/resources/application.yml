@@ -1,0 +1,57 @@
+server:
+  port: 8081
+
+spring:
+#  kafka:
+#    consumer:
+#      bootstrap-servers: localhost:9092
+#      group-id: chatting
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      auto-offset-reset: earliest
+#      properties:
+#        spring:
+#          deserializer:
+#            value:
+#              delegate:
+#                class: org.springframework.kafka.support.serializer.JsonDeserializer
+#          json:
+#            value:
+#              default:
+#                type: Forcloud.chat.config.MessageDto
+#            trusted:
+#              packages: Forcloud.chat.config
+#    producer:
+#      bootstrap-servers: localhost:9092 // 프로듀서 서버 주소
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#  kafka:
+#    consumer:
+#      bootstrap-servers: kafka-cluster-kafka-bootstrap:9092
+#      group-id: comfy
+#      auto-offset-reset: earliest
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#    producer:
+#      bootstrap-servers: kafka-cluster-kafka-bootstrap:9092
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/forcloud?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: 1234
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        show-sql: true
+        generate-ddl: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
