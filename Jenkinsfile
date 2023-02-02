@@ -24,7 +24,7 @@ pipeline {
                         scp /var/jenkins_home/workspace/forCloud_Backend-chatting_Pipeline/build/libs/chat-0.0.1-SNAPSHOT.jar centos@210.109.62.6:/home/centos/Backend-chatting
                         ssh -t centos@210.109.62.6 ./deploy1.sh
                     '''
-                    echo "Success"
+                    echo "chat Success"
                 }
             }
         }
