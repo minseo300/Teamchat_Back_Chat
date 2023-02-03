@@ -15,14 +15,15 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import org.json.simple.JSONArray;
 
 import org.json.simple.JSONObject;
 
 import org.json.simple.parser.JSONParser;
+import org.springframework.web.multipart.MultipartFile;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -76,7 +77,11 @@ public class ChatController {
             dto.setMsg((String)jsonObject.get("msg"));
             dto.setTimestamp((String)jsonObject.get("timestamp"));
             dto.setMemberId((Long)jsonObject.get("memberId"));
+            dto.setMsgType((String)jsonObject.get("msgType"));
+            dto.setOriginalFileName((String)jsonObject.get("originalFileName"));
+
             log.info("dto timestamp: {}",dto.getTimestamp());
+
             response.add(dto);
         }
 
@@ -126,6 +131,8 @@ public class ChatController {
             dto.setMsg((String)jsonObject.get("msg"));
             dto.setTimestamp((String)jsonObject.get("timestamp"));
             dto.setMemberId((Long)jsonObject.get("memberId"));
+            dto.setMsgType((String)jsonObject.get("msgType"));
+            dto.setOriginalFileName((String)jsonObject.get("originalFileName"));
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -157,6 +164,73 @@ public class ChatController {
         response.setNumber(Long.valueOf(jsonArray.size()));
         response.setLast(dto);
         log.info("response.last: {}",response.getLast());
+        return new BaseResponse<>(response);
+    }
+
+    // 파일 전송
+    @PostMapping("/chat/file")
+    public BaseResponse<PostFileResponse> uploadFile(@RequestParam("file")MultipartFile file, @RequestParam("memberId")Long memberId,@RequestParam(name="roomId")Long roomId, @RequestParam("timestamp")String timestamp, @RequestParam("nickName")String nickName) throws IOException {
+        String path="/Users/iminseo/Desktop/chat/src/main/resources/chattings/"+roomId;
+        log.info("file: {}",file.getOriginalFilename());
+        log.info("roomId: {}",roomId);
+        log.info("memberId: {}",memberId);
+
+        String fileId = (new Date().getTime()) + "" + (new Random().ints(1000, 9999).findAny().getAsInt())+"_"+file.getOriginalFilename(); // 현재 날짜와 랜덤 정수값으로 새로운 파일명 만들기
+        String originName = file.getOriginalFilename(); // ex) 파일.jpg
+        String fileExtension = originName.substring(originName.lastIndexOf(".") + 1); // ex) jpg
+        log.info("fileExtension: {}",fileExtension);
+        originName = originName.substring(0, originName.lastIndexOf(".")); // ex) 파일
+        long fileSize = file.getSize(); // 파일 사이즈
+
+        File fileSave = new File(path, fileId); // ex) fileId.jpg
+        if(!fileSave.exists()) { // 폴더가 없을 경우 폴더 만들기
+            fileSave.mkdirs();
+        }
+
+        file.transferTo(fileSave); // fileSave의 형태로 파일 저장
+
+        PostFileResponse response=new PostFileResponse(fileId,roomId,memberId,timestamp,nickName);
+
+        return new BaseResponse<>(response);
+
+    }
+
+    @GetMapping("/chat/file/{roomId}")
+    public BaseResponse<GetFilesResponse> getFiles(@PathVariable(name="roomId")Long roomId){
+        File dir=new File("/Users/iminseo/Desktop/chat/src/main/resources/chattings/"+roomId);
+        List<GetMinute> minuteList=new ArrayList<>();
+        List<GetFile> fileList=new ArrayList<>();
+        GetFilesResponse response=new GetFilesResponse();
+        String[] files=dir.list();
+        log.info("files: {}",files);
+        for(int i=0;i<files.length;i++){
+            String filepath="/Users/iminseo/Desktop/chat/src/main/resources/chattings/"+roomId+"/"+files[i];
+            File file = new File(filepath);
+            byte[] data = new byte[(int) file.length()];
+            try (FileInputStream stream = new FileInputStream(file)) {
+                stream.read(data, 0, data.length);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+            String base64data = Base64.getEncoder().encodeToString(data);
+            if(files[i].startsWith(roomId+"-")){
+                GetMinute minute=new GetMinute();
+                minute.setName(files[i]);
+                minute.setRoomId(roomId);
+                minute.setBase64(base64data);
+                minuteList.add(minute);
+            }
+            else{
+                GetFile uploadedFile=new GetFile();
+                uploadedFile.setName(files[i]);
+                uploadedFile.setBase64(base64data);
+                uploadedFile.setRoomId(roomId);
+                fileList.add(uploadedFile);
+            }
+        }
+        response.setFilesList(fileList);
+        response.setMinutesList(minuteList);
+
         return new BaseResponse<>(response);
     }
 }

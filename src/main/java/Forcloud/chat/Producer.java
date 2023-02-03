@@ -28,10 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.nio.Buffer;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 
@@ -79,12 +76,39 @@ public class Producer {
             }
         }
         log.info("topic : " + topic);
-        log.info("[SEND] roomId: {}, memberId: {}, msg: {}, timestamp: {}, nickname: {}",
-                messageDto.getRoomId(), messageDto.getMemberId(), messageDto.getMsg(), messageDto.getTimestamp(),messageDto.getNickName());
+        log.info("[SEND] roomId: {}, memberId: {}, msg: {}, timestamp: {}, nickname: {}, msgType: {}",
+                messageDto.getRoomId(), messageDto.getMemberId(), messageDto.getMsg(), messageDto.getTimestamp(),messageDto.getNickName(), messageDto.getMsgType());
+
+        // 파일인 경우 MessageDto.msg를 base64로 변환
+        if(messageDto.getMsgType().equals("file")){
+            log.info("it is file");
+            String filepath="/Users/iminseo/Desktop/chat/src/main/resources/chattings/"+messageDto.getRoomId()+"/"+messageDto.getMsg();
+            File file = new File(filepath);
+            byte[] data = new byte[(int) file.length()];
+            try (FileInputStream stream = new FileInputStream(file)) {
+                stream.read(data, 0, data.length);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
+            String extension=messageDto.getMsg().substring(messageDto.getMsg().lastIndexOf(".")+1);
+            String original= messageDto.getMsg();
+            if(extension.equals("jpg")||extension.equals("jpeg")||extension.equals("png")){
+                String base64data = "data:image/"+extension+";base64,"+Base64.getEncoder().encodeToString(data);
+                messageDto.setMsg(base64data);
+                messageDto.setMsgType("img");
+            }
+            else{
+                String base64data = Base64.getEncoder().encodeToString(data);
+                messageDto.setMsg(base64data);
+                messageDto.setMsgType("file");
+            }
+            log.info("original: {}",original.split("_")[1]);
+            messageDto.setOriginalFileName(original);
+        }
+        else log.info("it is not file");
+
         kafkaTemplate.send(topic, messageDto);
-
         saveMessage(topic,messageDto);
-
     }
 
     public void saveMessage(String topic,MessageDto messageDto) throws IOException, ParseException {
@@ -98,6 +122,8 @@ public class Producer {
         data.put("memberId", messageDto.getMemberId());
         data.put("roomId", messageDto.getRoomId());
         data.put("msg", messageDto.getMsg());
+        data.put("msgType",messageDto.getMsgType());
+        data.put("originalFileName",messageDto.getOriginalFileName());
 
         if(file.exists()) {
             Reader reader=new FileReader("/Users/iminseo/Desktop/chat/src/main/resources/chattings/" + topic + ".json");
