@@ -12,7 +12,7 @@ pipeline {
         stage('BE-Build') {
             steps {
                     sh "./gradlew clean build --exclude-task test"
-                    slackSend (channel: '#migrator', color: '#FFFF00', message: "Backend-chatting Build Complete: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                    slackSend (channel: '#jenkins-alert', color: '#FFFF00', message: "Backend-chatting Build Complete: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
             }
         }
         stage('Deploy') {
@@ -26,7 +26,7 @@ pipeline {
                         ssh -t centos@210.109.62.6 ./deploy1.sh
                     '''
                     echo "chat Success"
-                    slackSend (channel: '#migrator', color: '#FFFF00', message: "Backend-chatting Deploy Complete: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                    slackSend (channel: '#jenkins-alert', color: '#FFFF00', message: "Backend-chatting Deploy Complete: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
                 }
             }
         }
