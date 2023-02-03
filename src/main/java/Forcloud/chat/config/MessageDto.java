@@ -15,6 +15,7 @@ public class MessageDto implements Serializable {
     private String timestamp;
     private Long roomId;
     private Long memberId;
-
+    private String msgType;
+    private String originalFileName;
 }
 

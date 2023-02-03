@@ -20,6 +20,7 @@ public class SchedulerService {
     SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
 
     @Scheduled(cron = "0 0 0 * * *")
+//    @Scheduled(fixedDelay = 1000)
     public void run() throws IOException, ParseException, java.text.ParseException {
         JSONParser parser=new JSONParser();
 
@@ -38,16 +39,20 @@ public class SchedulerService {
             JSONObject first=(JSONObject) jsonArray.get(0);
             String roomNum=String.valueOf(first.get("roomId"));
             String fileName= fn_Yesterday();
-            BufferedWriter bw =new BufferedWriter(new FileWriter("/Users/iminseo/Desktop/chat/src/main/resources/chattings/"+roomNum+"-"+ fileName +".txt",true));
+            BufferedWriter bw =new BufferedWriter(new FileWriter("/Users/iminseo/Desktop/chat/src/main/resources/chattings/"+roomNum+"/"+roomNum+"-"+ fileName +".txt",true));
             for(int j=0;j< jsonArray.size();j++){
                 JSONObject jsonObject=(JSONObject) jsonArray.get(j);
                 log.info("jsonObject: {}",jsonObject);
                 String dateStr=(String)jsonObject.get("timestamp");
+                String msgType=(String)jsonObject.get("msgType");
                 Date date=sdf.parse(dateStr.substring(0,7));
                 log.info("date: {}",date);
                 log.info("today: {}",today);
+                String msg;
                 if(date.compareTo(today)<0){
-                    String msg="["+jsonObject.get("nickName")+"] "+ jsonObject.get("msg")+"\n";
+                    if(msgType.equals("file")||msgType.equals("img"))
+                        msg=dateStr+" ["+jsonObject.get("nickName")+"] "+" 파일 업로드\n" ;
+                    else msg=dateStr+" ["+jsonObject.get("nickName")+"] "+ jsonObject.get("msg")+"\n";
                     log.info("msg: {}",msg);
                     bw.write(msg);
                     bw.flush();
