@@ -6,12 +6,13 @@ pipeline {
     stages {
         stage('Git Clone') {
             steps {
-                git branch: 'cicdtest', url: 'https://github.com/KA-ForCloud/backend-chatting.git'
+                git branch: 'main', url: 'https://github.com/KA-ForCloud/backend-chatting.git'
             }
         }
         stage('BE-Build') {
             steps {
                     sh "./gradlew clean build --exclude-task test"
+                    slackSend (channel: '#migrator', color: '#FFFF00', message: "Backend-chatting Build Complete: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
             }
         }
         stage('Deploy') {
@@ -25,6 +26,7 @@ pipeline {
                         ssh -t centos@210.109.62.6 ./deploy1.sh
                     '''
                     echo "chat Success"
+                    slackSend (channel: '#migrator', color: '#FFFF00', message: "Backend-chatting Deploy Complete: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
                 }
             }
         }
