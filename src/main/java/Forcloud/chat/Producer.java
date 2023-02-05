@@ -117,12 +117,16 @@ public class Producer {
         JSONArray jsonArray=new JSONArray();
         String jsonStr = null;
         JSONObject data = new JSONObject();
+
         data.put("timestamp", messageDto.getTimestamp());
         data.put("nickName", messageDto.getNickName());
         data.put("memberId", messageDto.getMemberId());
         data.put("roomId", messageDto.getRoomId());
-        data.put("msg", messageDto.getMsg());
         data.put("msgType",messageDto.getMsgType());
+        if(messageDto.getMsgType().equals("file")||messageDto.getMsgType().equals("img")){
+            data.put("msg",messageDto.getOriginalFileName());
+        }
+        else data.put("msg", messageDto.getMsg());
         data.put("originalFileName",messageDto.getOriginalFileName());
 
         if(file.exists()) {

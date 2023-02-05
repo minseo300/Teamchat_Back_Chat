@@ -79,6 +79,30 @@ public class ChatController {
             dto.setMemberId((Long)jsonObject.get("memberId"));
             dto.setMsgType((String)jsonObject.get("msgType"));
             dto.setOriginalFileName((String)jsonObject.get("originalFileName"));
+            if(((String)jsonObject.get("msgType")).equals("file")||((String)jsonObject.get("msgType")).equals("img")){
+                log.info("dto.originalfilename: {}",dto.getOriginalFileName());
+                String filepath="/Users/iminseo/Desktop/chat/src/main/resources/chattings/"+dto.getRoomId()+"/"+dto.getOriginalFileName();
+                File file = new File(filepath);
+                byte[] data = new byte[(int) file.length()];
+                try (FileInputStream stream = new FileInputStream(file)) {
+                    stream.read(data, 0, data.length);
+                } catch (Throwable e) {
+                    e.printStackTrace();
+                }
+                String extension=dto.getMsg().substring(dto.getMsg().lastIndexOf(".")+1);
+                String original= dto.getMsg();
+                if(extension.equals("jpg")||extension.equals("jpeg")||extension.equals("png")){
+                    String base64data = "data:image/"+extension+";base64,"+Base64.getEncoder().encodeToString(data);
+                    log.info("base64data: {}",base64data);
+                    dto.setMsg(base64data);
+                }
+                else{
+                    String base64data = Base64.getEncoder().encodeToString(data);
+                    dto.setMsg(base64data);
+                }
+            }
+
+
 
             log.info("dto timestamp: {}",dto.getTimestamp());
 
