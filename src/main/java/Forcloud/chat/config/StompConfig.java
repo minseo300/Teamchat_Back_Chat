@@ -18,12 +18,13 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
     private final StompHandler stompHandler;
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/stomp/chat") // 웹소켓 서버의 엔드포인트
-                .setAllowedOrigins("*") // cors 오류 방지 TODO: origin 변경
-                .withSockJS();
-//        registry.addEndpoint("/stomp/chat")
-//                .setAllowedOriginPatterns("http://*.*.*.*:8081", "http://*:8081") //안해도 무관
+//        registry.addEndpoint("/stomp/chat") // 웹소켓 서버의 엔드포인트
+//                .setAllowedOrigins("*") // cors 오류 방지 TODO: origin 변경
 //                .withSockJS();
+        registry.addEndpoint("/stomp/chat")
+                .setAllowedOriginPatterns("http://*.*.*.*:8081", "http://*:8081") //안해도 무관
+                .setAllowedOrigins("*")
+                .withSockJS();
     }
 
     @Override
