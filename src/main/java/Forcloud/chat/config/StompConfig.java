@@ -19,7 +19,7 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/stomp/chat") // 웹소켓 서버의 엔드포인트
-                .setAllowedOrigins("http://localhost:3000") // cors 오류 방지 TODO: origin 변경
+                .setAllowedOrigins("http://210.109.61.179:3000") // cors 오류 방지 TODO: origin 변경
                 .withSockJS();
 //        registry.addEndpoint("/stomp/chat")
 //                .setAllowedOriginPatterns("http://*.*.*.*:8081", "http://*:8081") //안해도 무관
