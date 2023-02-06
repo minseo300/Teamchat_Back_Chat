@@ -14,7 +14,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry){
         // TODO: allowedOrigins-> 우리 서버 ip로 수정 필요 ex)http://192.126.32.2:3000
         registry.addMapping("/**")
-                .allowedOrigins("*")
+                .allowedOriginPatterns("*")
                 .allowedMethods("*");
     }
 }
