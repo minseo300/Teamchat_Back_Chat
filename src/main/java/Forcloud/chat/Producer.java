@@ -82,7 +82,7 @@ public class Producer {
         // 파일인 경우 MessageDto.msg를 base64로 변환
         if(messageDto.getMsgType().equals("file")){
             log.info("it is file");
-            String filepath="/Users/iminseo/Desktop/chat/src/main/resources/chattings/"+messageDto.getRoomId()+"/"+messageDto.getMsg();
+            String filepath="/home/centos/Backend-chatting/chattings/"+messageDto.getRoomId()+"/"+messageDto.getMsg();
             File file = new File(filepath);
             byte[] data = new byte[(int) file.length()];
             try (FileInputStream stream = new FileInputStream(file)) {
@@ -113,7 +113,7 @@ public class Producer {
 
     public void saveMessage(String topic,MessageDto messageDto) throws IOException, ParseException {
         JSONParser parser=new JSONParser();
-        File file=new File("/Users/iminseo/Desktop/chat/src/main/resources/chattings/"+topic+".json");
+        File file=new File("/home/centos/Backend-chatting/chattings/"+topic+".json");
         JSONArray jsonArray=new JSONArray();
         String jsonStr = null;
         JSONObject data = new JSONObject();
@@ -130,7 +130,7 @@ public class Producer {
         data.put("originalFileName",messageDto.getOriginalFileName());
 
         if(file.exists()) {
-            Reader reader=new FileReader("/Users/iminseo/Desktop/chat/src/main/resources/chattings/" + topic + ".json");
+            Reader reader=new FileReader("/home/centos/Backend-chatting/chattings/" + topic + ".json");
 
 //            JSONObject jsonObject=(JSONObject) parser.parse(reader);
 //            log.info("jsonObject: {}",jsonObject);
@@ -146,7 +146,7 @@ public class Producer {
             object.put("messages",jsonArray);
         }
         jsonStr= jsonArray.toJSONString();
-        BufferedWriter bw=new BufferedWriter(new FileWriter("/Users/iminseo/Desktop/chat/src/main/resources/chattings/"+topic+".json",false));
+        BufferedWriter bw=new BufferedWriter(new FileWriter("/home/centos/Backend-chatting/chattings/"+topic+".json",false));
         bw.write(jsonStr);
         bw.flush();
 
