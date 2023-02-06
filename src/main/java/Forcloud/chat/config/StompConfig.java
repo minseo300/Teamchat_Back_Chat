@@ -22,8 +22,7 @@ public class StompConfig implements WebSocketMessageBrokerConfigurer {
 //                .setAllowedOrigins("*") // cors 오류 방지 TODO: origin 변경
 //                .withSockJS();
         registry.addEndpoint("/stomp/chat")
-                .setAllowedOriginPatterns("http://*.*.*.*:8081", "http://*:8081") //안해도 무관
-                .setAllowedOrigins("*")
+                .setAllowedOriginPatterns("*")
                 .withSockJS();
     }
 
