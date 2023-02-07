@@ -89,7 +89,6 @@ public class ConsumerConfig {
             log.info("[Consume] - des: {}",des);
             template.convertAndSend(des,data.value());
 
-            // TODO: 채팅 내용 파일에 저장
         }
     }
 }

@@ -81,7 +81,7 @@ public class Producer {
 
         // 파일인 경우 MessageDto.msg를 base64로 변환
         if(messageDto.getMsgType().equals("file")){
-            log.info("it is file");
+//            log.info("it is file");
             String filepath="/home/centos/Backend-chatting/chattings/"+messageDto.getRoomId()+"/"+messageDto.getMsg();
             File file = new File(filepath);
             byte[] data = new byte[(int) file.length()];
@@ -102,7 +102,7 @@ public class Producer {
                 messageDto.setMsg(base64data);
                 messageDto.setMsgType("file");
             }
-            log.info("original: {}",original.split("_")[1]);
+//            log.info("original: {}",original.split("_")[1]);
             messageDto.setOriginalFileName(original);
         }
         else log.info("it is not file");
@@ -135,9 +135,9 @@ public class Producer {
 //            JSONObject jsonObject=(JSONObject) parser.parse(reader);
 //            log.info("jsonObject: {}",jsonObject);
             jsonArray=(JSONArray) parser.parse(reader);
-            log.info("jsonArray: {}",jsonArray);
+//            log.info("jsonArray: {}",jsonArray);
             jsonArray.add(data);
-            log.info("after add data to jsonArray: {}",jsonArray);
+//            log.info("after add data to jsonArray: {}",jsonArray);
 
         }
         else{

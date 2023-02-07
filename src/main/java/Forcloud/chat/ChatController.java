@@ -71,7 +71,7 @@ public class ChatController {
         for(int i=0;i< jsonArray.size();i++){
             MessageDto dto=new MessageDto();
             JSONObject jsonObject=(JSONObject) jsonArray.get(i);
-            log.info("jsonObject: {}",jsonObject);
+//            log.info("jsonObject: {}",jsonObject);
             dto.setRoomId((Long)jsonObject.get("roomId"));
             dto.setNickName((String)jsonObject.get("nickName"));
             dto.setMsg((String)jsonObject.get("msg"));
@@ -80,7 +80,7 @@ public class ChatController {
             dto.setMsgType((String)jsonObject.get("msgType"));
             dto.setOriginalFileName((String)jsonObject.get("originalFileName"));
             if(((String)jsonObject.get("msgType")).equals("file")||((String)jsonObject.get("msgType")).equals("img")){
-                log.info("dto.originalfilename: {}",dto.getOriginalFileName());
+//                log.info("dto.originalfilename: {}",dto.getOriginalFileName());
                 String filepath="/home/centos/Backend-chatting/chattings/"+dto.getRoomId()+"/"+dto.getOriginalFileName();
                 File file = new File(filepath);
                 byte[] data = new byte[(int) file.length()];
@@ -93,7 +93,7 @@ public class ChatController {
                 String original= dto.getMsg();
                 if(extension.equals("jpg")||extension.equals("jpeg")||extension.equals("png")){
                     String base64data = "data:image/"+extension+";base64,"+Base64.getEncoder().encodeToString(data);
-                    log.info("base64data: {}",base64data);
+//                    log.info("base64data: {}",base64data);
                     dto.setMsg(base64data);
                 }
                 else{
