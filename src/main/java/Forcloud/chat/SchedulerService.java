@@ -26,20 +26,20 @@ public class SchedulerService {
 
         Calendar c=Calendar.getInstance();
         Date today=sdf.parse(sdf.format(c.getTime()));
-        File dir=new File("/home/centos/fileshare/chattings");
+        File dir=new File("/home/centos/fileshare/chatting");
 
         String[] rooms=dir.list((r,name)->name.endsWith(".json"));
 //        log.info("room[1]: {}",rooms[1]);
         for(int i=0;i< rooms.length;i++){
             log.info("room[i]: {}",rooms[i]);
-            Reader reader=new FileReader("/home/centos/fileshare/chattings/"+rooms[i]);
+            Reader reader=new FileReader("/home/centos/fileshare/chatting/"+rooms[i]);
 
             JSONArray jsonArray=(JSONArray) parser.parse(reader);
 //            log.info("jsonArray size: {}",jsonArray.size());
             JSONObject first=(JSONObject) jsonArray.get(0);
             String roomNum=String.valueOf(first.get("roomId"));
             String fileName= fn_Yesterday();
-            BufferedWriter bw =new BufferedWriter(new FileWriter("/home/centos/fileshare/chattings/"+roomNum+"/"+roomNum+"-"+ fileName +".txt",true));
+            BufferedWriter bw =new BufferedWriter(new FileWriter("/home/centos/fileshare/chatting/"+roomNum+"/"+roomNum+"-"+ fileName +".txt",true));
             for(int j=0;j< jsonArray.size();j++){
                 JSONObject jsonObject=(JSONObject) jsonArray.get(j);
                 log.info("jsonObject: {}",jsonObject);
