@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Git Clone') {
             steps {
-                git branch: 'main', url: 'https://github.com/KA-ForCloud/backend-chatting.git'
+                git branch: 'master', url: 'https://github.com/KA-ForCloud/backend-chatting.git'
             }
         }
         stage('BE-Build') {
