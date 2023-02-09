@@ -64,7 +64,7 @@ public class ChatController {
         log.info("getChattingList - roomId: {}",roomId);
         List<MessageDto> response=new ArrayList<>();
 
-        Reader reader= new FileReader("/home/centos/fileshare/chattings/room."+roomId+".json");
+        Reader reader= new FileReader("/home/centos/fileshare/chatting/room."+roomId+".json");
         JSONParser parser=new JSONParser();
 
         JSONArray jsonArray=(JSONArray) parser.parse(reader);
@@ -81,7 +81,7 @@ public class ChatController {
             dto.setOriginalFileName((String)jsonObject.get("originalFileName"));
             if(((String)jsonObject.get("msgType")).equals("file")||((String)jsonObject.get("msgType")).equals("img")){
 //                log.info("dto.originalfilename: {}",dto.getOriginalFileName());
-                String filepath="/home/centos/fileshare/chattings/"+dto.getRoomId()+"/"+dto.getOriginalFileName();
+                String filepath="/home/centos/fileshare/chatting/"+dto.getRoomId()+"/"+dto.getOriginalFileName();
                 File file = new File(filepath);
                 byte[] data = new byte[(int) file.length()];
                 try (FileInputStream stream = new FileInputStream(file)) {
@@ -141,7 +141,7 @@ public class ChatController {
         GetChattingsResponse response=new GetChattingsResponse();
         MessageDto dto=new MessageDto();
 
-        Reader reader= new FileReader("/home/centos/fileshare/chattings/room."+roomId+".json");
+        Reader reader= new FileReader("/home/centos/fileshare/chatting/room."+roomId+".json");
         JSONParser parser=new JSONParser();
 //        JSONObject obj= (JSONObject) parser.parse(reader);
 //        log.info("obj: {}",obj);
@@ -194,7 +194,7 @@ public class ChatController {
     // 파일 전송
     @PostMapping("/chat/file")
     public BaseResponse<PostFileResponse> uploadFile(@RequestParam("file")MultipartFile file, @RequestParam("memberId")Long memberId,@RequestParam(name="roomId")Long roomId, @RequestParam("timestamp")String timestamp, @RequestParam("nickName")String nickName) throws IOException {
-        String path="/home/centos/fileshare/chattings/"+roomId;
+        String path="/home/centos/fileshare/chatting/"+roomId;
         log.info("file: {}",file.getOriginalFilename());
         log.info("roomId: {}",roomId);
         log.info("memberId: {}",memberId);
@@ -221,14 +221,14 @@ public class ChatController {
 
     @GetMapping("/chat/file/{roomId}")
     public BaseResponse<GetFilesResponse> getFiles(@PathVariable(name="roomId")Long roomId){
-        File dir=new File("/home/centos/fileshare/chattings/"+roomId);
+        File dir=new File("/home/centos/fileshare/chatting/"+roomId);
         List<GetMinute> minuteList=new ArrayList<>();
         List<GetFile> fileList=new ArrayList<>();
         GetFilesResponse response=new GetFilesResponse();
         String[] files=dir.list();
         log.info("files: {}",files);
         for(int i=0;i<files.length;i++){
-            String filepath="/home/centos/fileshare/chattings/"+roomId+"/"+files[i];
+            String filepath="/home/centos/fileshare/chatting/"+roomId+"/"+files[i];
             File file = new File(filepath);
             byte[] data = new byte[(int) file.length()];
             try (FileInputStream stream = new FileInputStream(file)) {
