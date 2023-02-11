@@ -36,6 +36,7 @@ spring:
 #      bootstrap-servers: kafka-cluster-kafka-bootstrap:9092
 #      key-serializer: org.apache.kafka.common.serialization.StringSerializer
 #      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
 #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://172.16.48.193:3306/teamchat?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
@@ -55,3 +56,4 @@ spring:
 #  level:
 #    org.hibernate.SQL: debug
 #    org.hibernate.type: trace
+
