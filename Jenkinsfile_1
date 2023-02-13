@@ -109,7 +109,7 @@ pipeline {
                             echo "docker remove"
                             sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10004 'docker rmi -f lmslmsms0616/teamchat_back_chat:latest | true'"
                             echo "docker remove image"
-                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10004 'docker run -d --name back_chat -p 80:8081 -p 8081:8081 lmslmsms0616/teamchat_back_chat:${currentBuild.number}'"
+                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10004 'docker run -d --name back_chat -p 8081:8081 lmslmsms0616/teamchat_back_chat:${currentBuild.number}'"
                             echo "docker run"
 
                             slackSend (channel: '#jenkins-alert', color: '#FFFF00', message: "WAS-2-BACKEND-CHAT Deploy Complete: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
