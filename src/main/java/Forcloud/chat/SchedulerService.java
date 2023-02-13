@@ -19,8 +19,8 @@ import org.json.simple.parser.JSONParser;
 public class SchedulerService {
     SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd");
 
-//    @Scheduled(cron = "0 0 0 * * *")
-    @Scheduled(fixedDelay = 1000)
+    @Scheduled(cron = "0 0 0 * * *")
+//    @Scheduled(fixedDelay = 1000)
     public void run() throws IOException, ParseException, java.text.ParseException {
         JSONParser parser=new JSONParser();
 
