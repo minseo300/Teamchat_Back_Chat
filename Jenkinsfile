@@ -86,34 +86,45 @@ pipeline {
                   steps {
                         sshagent(credentials: ['kic_key']) {
                             echo "sshagent start"
-
-                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10003 uptime"
+                            
+                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.61.15 uptime"
                             echo "uptime end"
                             // sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10003 'sudo chmod 666 /var/run/docker.sock'"
-                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10003 'docker stop back_chat | true'"
-                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10003 'docker rm back_chat | true'"
+                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.61.15 'docker stop back_chat | true'"
+                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.61.15 'docker rm back_chat | true'"
                             echo "docker remove"
-                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10003 'docker rmi -f lmslmsms0616/teamchat_back_chat:latest | true'"
+                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.61.15 'docker rmi -f lmslmsms0616/teamchat_back_chat:latest | true'"
                             echo "docker remove image"
-                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10003 'docker run -d --name back_chat -p 80:8081 -p 443:8081 -p 8081:8081 lmslmsms0616/teamchat_back_chat:${currentBuild.number}'"
+                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.61.15 'docker run -d --name back_chat -p 80:8081 -p 443:8081 -p 8081:8081 lmslmsms0616/teamchat_back_chat:${currentBuild.number}'"
                             echo "docker run"
 
-                            slackSend (channel: '#jenkins-alert', color: '#FFFF00', message: "WAS-1-BACKEND-CHAT Deploy Complete: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-                            echo "WAS_1_Success"
+                            //sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10003 uptime"
+                            //echo "uptime end"
+                            // sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10003 'sudo chmod 666 /var/run/docker.sock'"
+                            //sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10003 'docker stop back_chat | true'"
+                            //sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10003 'docker rm back_chat | true'"
+                            //echo "docker remove"
+                            //sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10003 'docker rmi -f lmslmsms0616/teamchat_back_chat:latest | true'"
+                            //echo "docker remove image"
+                            //sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10003 'docker run -d --name back_chat -p 80:8081 -p 443:8081 -p 8081:8081 lmslmsms0616/teamchat_back_chat:${currentBuild.number}'"
+                            //echo "docker run"
 
-                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10004 uptime"
-                            echo "uptime end"
+                            //slackSend (channel: '#jenkins-alert', color: '#FFFF00', message: "WAS-1-BACKEND-CHAT Deploy Complete: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                            //echo "WAS_1_Success"
+
+                            //sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10004 uptime"
+                            //echo "uptime end"
                             // sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10004 'sudo chmod 666 /var/run/docker.sock'"
-                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10004 'docker stop back_chat | true'"
-                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10004 'docker rm back_chat | true'"
-                            echo "docker remove"
-                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10004 'docker rmi -f lmslmsms0616/teamchat_back_chat:latest | true'"
-                            echo "docker remove image"
-                            sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10004 'docker run -d --name back_chat -p 80:8081 -p 443:8081 -p 8081:8081 lmslmsms0616/teamchat_back_chat:${currentBuild.number}'"
-                            echo "docker run"
+                            //sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10004 'docker stop back_chat | true'"
+                            //sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10004 'docker rm back_chat | true'"
+                            //echo "docker remove"
+                            //sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10004 'docker rmi -f lmslmsms0616/teamchat_back_chat:latest | true'"
+                            //echo "docker remove image"
+                            //sh "ssh -o StrictHostKeyChecking=no centos@210.109.60.60 -p 10004 'docker run -d --name back_chat -p 80:8081 -p 443:8081 -p 8081:8081 lmslmsms0616/teamchat_back_chat:${currentBuild.number}'"
+                            //echo "docker run"
 
-                            slackSend (channel: '#jenkins-alert', color: '#FFFF00', message: "WAS-2-BACKEND-CHAT Deploy Complete: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-                            echo "WAS_2_Success"
+                            //slackSend (channel: '#jenkins-alert', color: '#FFFF00', message: "WAS-2-BACKEND-CHAT Deploy Complete: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+                            //echo "WAS_2_Success"
                         }
                     }
 
