@@ -1,18 +1,18 @@
 server:
   port: 8081
-  ssl:
-    key-store: classpath:keystore.p12
-    key-store-password: pwd12!@
-    key-store-type: PKCS12
+#   ssl:
+#     key-store: classpath:keystore.p12
+#     key-store-password: pwd12!@
+#     key-store-type: PKCS12
 spring:
  datasource:
    driver-class-name: com.mysql.cj.jdbc.Driver
-   url: jdbc:mysql://172.16.48.193:3306/teamchat?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+   url: jdbc:mysql://172.16.0.86:3306/teamchat?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
    username: root
    password: qwer1234!
  jpa:
    hibernate:
-     ddl-auto: update
+     ddl-auto: create
    properties:
      hibernate:
        dialect: org.hibernate.dialect.MySQL8Dialect
